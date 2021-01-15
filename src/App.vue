@@ -18,7 +18,15 @@
             Skin color: {{ user.skin_color }} <br />
             Eye Color: {{ user.eye_color }} <br />
             Birth year: {{ user.birth_year }} <br />
-            Gender: {{ user.gender }} <br /><br />
+            Gender: {{ user.gender }} <br />
+            <h3>Home World</h3>
+            Name: {{ homeworld.name }} <br />
+            climate: {{ homeworld.climate }} <br />
+            gravity: {{ homeworld.gravity }} <br />
+            terrain: {{ homeworld.terrain }} <br />
+            population: {{ homeworld.population }} <br />
+
+            <br /><br />
             <a @click="showDetail = false" href="#">Zavřít</a>
           </div>
         </div>
@@ -35,6 +43,7 @@ export default {
       showDetail: false,
       users: null,
       user: null,
+      homeworld: null,
     };
   },
   methods: {
@@ -46,9 +55,20 @@ export default {
         })
         .catch((err) => console.error(err));
     },
-    getDataUser(index) {
-      this.user = this.users[index];
+    getDataUser(id) {
+      this.user = this.users[id];
+      this.getHomeWorld(id);
       this.showDetail = true;
+    },
+    getHomeWorld(id) {
+      this.homeworld = this.users[id].homeworld;
+
+      fetch(this.homeworld)
+        .then((response) => response.json())
+        .then((data) => {
+          this.homeworld = data;
+        })
+        .catch((err) => console.error(err));
     },
   },
   created: function () {
